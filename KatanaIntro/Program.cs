@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -8,6 +9,8 @@ using Owin;
 
 namespace KatanaIntro
 {
+    using AppFunc = Func<IDictionary<string, object>, Task>;
+
     class Program
     {
         static void Main(string[] args)
@@ -28,11 +31,27 @@ namespace KatanaIntro
     {
         public void Configuration(IAppBuilder app)
         {
-            app.UseWelcomePage();
-//             app.Run(ctx =>
-//             {
-//                 return ctx.Response.WriteAsync("Hello World!");
-//             });
+            app.Use<HelloWorldComponent>();
+        }
+    }
+
+    public class HelloWorldComponent
+    {
+        private AppFunc _nextComponent;
+
+        public HelloWorldComponent(AppFunc nextComponent)
+        {
+            _nextComponent = nextComponent;
+        }
+
+        public Task Invoke(IDictionary<string, object> environment)
+        {
+            //await _nextComponent(environment);
+            var response = environment["owin.ResponseBody"] as Stream;
+            using (var writer = new StreamWriter(response))
+            {
+                return writer.WriteAsync("Hello!!");
+            }
         }
     }
 }
