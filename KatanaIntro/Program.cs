@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Owin.Hosting;
@@ -56,7 +57,19 @@ namespace KatanaIntro
                         else
                             Console.ForegroundColor = ConsoleColor.Yellow;
                     }
-                    Console.WriteLine("{0}", pair.Value);
+
+
+                    var subs = pair.Value as IDictionary<string, object>;
+                    if (subs != null)
+                    {
+                        foreach (var sub in subs)
+                        {
+                            Console.WriteLine("\t{0}:{1}", sub.Key, sub.Value);
+                        }
+
+                    }
+                    else
+                        Console.WriteLine("{0}", pair.Value);
                 }
                 Console.ForegroundColor = color;
                 await next();
