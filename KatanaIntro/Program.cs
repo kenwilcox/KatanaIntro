@@ -5,6 +5,7 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web.Http;
 using Microsoft.Owin.Hosting;
 using Owin;
 
@@ -75,8 +76,22 @@ namespace KatanaIntro
                 await next();
             });
 
+            ConfigureWebApi(app);
+
             app.UseHelloWorld();
             //app.UseWelcomePage();
+        }
+
+        private void ConfigureWebApi(IAppBuilder app)
+        {
+            var config = new HttpConfiguration();
+            config.Routes.MapHttpRoute(
+                "DefaultApi",
+                "api/{controller}/{id}",
+                new {id = RouteParameter.Optional}
+                );
+            
+            app.UseWebApi(config);
         }
     }
 
