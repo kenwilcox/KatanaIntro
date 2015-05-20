@@ -32,6 +32,7 @@ namespace KatanaIntro
         public void Configuration(IAppBuilder app)
         {
             app.UseHelloWorld();
+            app.UseWelcomePage();
         }
     }
 
@@ -54,12 +55,14 @@ namespace KatanaIntro
 
         public Task Invoke(IDictionary<string, object> environment)
         {
-            //await _nextComponent(environment);
+            _nextComponent(environment);
+
             var response = environment["owin.ResponseBody"] as Stream;
             using (var writer = new StreamWriter(response))
             {
                 return writer.WriteAsync("Hello!!");
             }
+            
         }
     }
 }
