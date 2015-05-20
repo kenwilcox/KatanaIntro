@@ -17,6 +17,7 @@ namespace KatanaIntro
             using (WebApp.Start<Startup>(uri))
             {
                 Console.WriteLine("Starting...");
+                Console.WriteLine(uri);
                 Console.ReadKey();
                 Console.WriteLine("Stopping...");
             }
@@ -27,10 +28,11 @@ namespace KatanaIntro
     {
         public void Configuration(IAppBuilder app)
         {
-            app.Run(ctx =>
-            {
-                return ctx.Response.WriteAsync("Hello World!");
-            });
+            app.UseWelcomePage();
+//             app.Run(ctx =>
+//             {
+//                 return ctx.Response.WriteAsync("Hello World!");
+//             });
         }
     }
 }
