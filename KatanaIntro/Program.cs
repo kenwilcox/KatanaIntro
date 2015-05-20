@@ -31,8 +31,39 @@ namespace KatanaIntro
     {
         public void Configuration(IAppBuilder app)
         {
+            app.Use(async (env, next) =>
+            {
+                Console.WriteLine("Requesting : " + env.Request.Path);
+                await next();
+                Console.WriteLine("Respone: " + env.Response.StatusCode);
+            });
+            
+            // This is is ugly code
+            app.Use(async (environment, next) =>
+            {
+                var color = Console.ForegroundColor;
+                foreach (var pair in environment.Environment)
+                {
+                    Console.ForegroundColor = ConsoleColor.Cyan;
+                    Console.Write("{0}: ", pair.Key);
+
+                    Console.ForegroundColor = color;
+                    if (pair.Key == "owin.ResponseStatusCode") {
+                        if(pair.Value.ToString() == "200") 
+                            Console.ForegroundColor = ConsoleColor.Green;
+                        else if (pair.Value.ToString().StartsWith("5"))
+                            Console.ForegroundColor = ConsoleColor.Red;
+                        else
+                            Console.ForegroundColor = ConsoleColor.Yellow;
+                    }
+                    Console.WriteLine("{0}", pair.Value);
+                }
+                Console.ForegroundColor = color;
+                await next();
+            });
+
             app.UseHelloWorld();
-            app.UseWelcomePage();
+            //app.UseWelcomePage();
         }
     }
 
