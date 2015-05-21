@@ -13,21 +13,21 @@ namespace KatanaIntro
 {
     using AppFunc = Func<IDictionary<string, object>, Task>;
 
-    class Program
-    {
-        static void Main(string[] args)
-        {
-            var uri = "http://localhost:8080";
+    //class Program
+    //{
+    //    static void Main(string[] args)
+    //    {
+    //        var uri = "http://localhost:8080";
 
-            using (WebApp.Start<Startup>(uri))
-            {
-                Console.WriteLine("Starting...");
-                Console.WriteLine(uri);
-                Console.ReadKey();
-                Console.WriteLine("Stopping...");
-            }
-        }
-    }
+    //        using (WebApp.Start<Startup>(uri))
+    //        {
+    //            Console.WriteLine("Starting...");
+    //            Console.WriteLine(uri);
+    //            Console.ReadKey();
+    //            Console.WriteLine("Stopping...");
+    //        }
+    //    }
+    //}
 
     public class Startup
     {
